@@ -2,296 +2,421 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LUYỆN THI TSA BÁCH KHOA - HỆ THỐNG TỰ ĐỘNG</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KHO MÃ THI THỬ TSA 2026</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- 1. CORE STYLES --- */
+        /* --- 1. GLOBAL VARIABLES --- */
         :root {
-            --primary: #b71540; /* Đỏ HUST */
-            --dark: #0c2461;
-            --light: #f5f6fa;
-            --white: #ffffff;
-            --success: #27ae60;
+            --primary: #b71540;      /* Đỏ HUST */
+            --primary-light: #ff4757; 
+            --dark: #0c2461;         /* Xanh đậm */
+            --bg: #f8f9fd;
+            --glass: rgba(255, 255, 255, 0.9);
+            --shadow-lg: 0 20px 40px rgba(12, 36, 97, 0.15);
+            --radius: 20px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+        html { scroll-behavior: smooth; }
+
         body {
-            font-family: 'Open Sans', sans-serif;
-            background-color: var(--light);
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: var(--bg);
             color: #333;
             line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        h1, h2, h3, .btn { font-family: 'Montserrat', sans-serif; }
-
+        h1, h2, h3, .price-text { font-family: 'Montserrat', sans-serif; }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-        /* --- 2. HERO SECTION (BANNER) --- */
+        /* Animation Classes */
+        .fade-up { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
+        .fade-up.active { opacity: 1; transform: translateY(0); }
+
+        /* --- 2. HERO HEADER (Banner) --- */
         .hero {
-            background: linear-gradient(135deg, var(--primary), var(--dark));
-            color: var(--white);
-            padding: 80px 0 120px;
-            text-align: center;
-            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+            background: radial-gradient(circle at 10% 20%, rgb(183, 21, 64) 0%, rgb(12, 36, 97) 90%);
+            color: white; padding: 100px 0 160px; text-align: center;
+            border-radius: 0 0 50% 50% / 40px; position: relative; overflow: hidden;
         }
-
-        .hero h1 { font-size: 3.5rem; font-weight: 800; margin-bottom: 10px; text-transform: uppercase; }
-        .hero p { font-size: 1.2rem; opacity: 0.9; margin-bottom: 30px; }
-        .hero-btn {
-            background: #f1c40f; color: var(--dark);
-            padding: 15px 40px; border-radius: 50px;
-            text-decoration: none; font-weight: 800; font-size: 1.1rem;
-            transition: 0.3s; display: inline-block;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        .hero-btn:hover { transform: translateY(-3px); background: #f39c12; }
-
-        /* --- 3. ABOUT TSA SECTION --- */
-        .section-title { text-align: center; margin: 60px 0 40px; color: var(--dark); font-size: 2.2rem; font-weight: 700; }
         
-        .features-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;
-            margin-bottom: 60px;
-        }
+        /* Hiệu ứng hạt nền trôi nổi */
+        .particle { position: absolute; background: rgba(255,255,255,0.1); border-radius: 50%; animation: float 10s infinite linear; }
+        .p1 { width: 80px; height: 80px; top: 10%; left: 10%; }
+        .p2 { width: 150px; height: 150px; bottom: 20%; right: 10%; animation-delay: -3s; }
+        @keyframes float { 0% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(180deg); } 100% { transform: translateY(0) rotate(360deg); } }
 
-        .feature-card {
-            background: var(--white); padding: 30px; border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: center;
-            transition: 0.3s; border-bottom: 4px solid transparent;
-        }
-        .feature-card:hover { transform: translateY(-10px); border-bottom-color: var(--primary); }
+        .hero h1 { font-size: 3.5rem; font-weight: 900; margin-bottom: 15px; text-shadow: 0 5px 15px rgba(0,0,0,0.3); line-height: 1.2;}
+        .hero-tag { background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); padding: 8px 25px; border-radius: 50px; font-weight: 700; border: 1px solid rgba(255,255,255,0.3); display: inline-block; margin-bottom: 25px; }
+
+        /* --- 3. CARDS INFO --- */
+        .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: -80px; position: relative; z-index: 10; }
         
-        .feature-icon { font-size: 3rem; color: var(--primary); margin-bottom: 20px; }
-        .feature-card h3 { margin-bottom: 15px; color: var(--dark); }
-
-        /* --- 4. PURCHASE SECTION (KHU VỰC MUA HÀNG) --- */
-        .purchase-wrapper {
-            background: var(--white);
-            max-width: 600px; margin: -80px auto 50px; /* Đẩy lên đè banner */
-            padding: 40px; border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-            position: relative; z-index: 10;
-            border: 2px solid #eee;
+        .info-card {
+            background: white; padding: 30px; border-radius: var(--radius);
+            box-shadow: var(--shadow-lg); text-align: center; transition: 0.3s;
+        }
+        .info-card:hover { transform: translateY(-10px); }
+        .icon-circle { 
+            width: 70px; height: 70px; background: #fff0f3; color: var(--primary); 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            font-size: 1.8rem; margin: 0 auto 20px; 
         }
 
-        .price-tag {
-            font-size: 3rem; font-weight: 800; color: var(--primary);
-            text-align: center; margin: 10px 0;
+        /* --- 4. PURCHASE SECTION (PC VERSION - PRO) --- */
+        .purchase-area {
+            margin: 80px 0; padding: 60px;
+            background: white; border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+            position: relative; overflow: hidden;
+            border: 1px solid #eee;
         }
-        .stock-info {
-            text-align: center; color: var(--success); font-weight: 600;
-            background: #eaffea; padding: 5px 15px; border-radius: 20px;
-            display: inline-block; margin-left: 50%; transform: translateX(-50%);
-            margin-bottom: 20px;
-        }
-
-        .btn-buy {
-            width: 100%; padding: 18px; border: none; border-radius: 10px;
-            background: var(--primary); color: var(--white);
-            font-size: 1.2rem; font-weight: 700; cursor: pointer;
-            transition: 0.3s; text-transform: uppercase;
-        }
-        .btn-buy:hover { background: #900e30; }
         
-        /* --- 5. MODAL & QR CODE --- */
+        .purchase-grid {
+            display: grid; grid-template-columns: 1.2fr 1fr; gap: 50px; align-items: center;
+        }
+
+        /* Cột Trái: Ảnh sản phẩm 3D */
+        .product-visual { text-align: center; position: relative; }
+        
+        /* Giả lập hình ảnh bộ đề thi bằng CSS */
+        .mockup-paper {
+            width: 80%; max-width: 350px; height: 450px;
+            background: linear-gradient(135deg, #ffffff, #f0f0f0);
+            border-radius: 15px; margin: 0 auto;
+            box-shadow: -20px 20px 40px rgba(0,0,0,0.2);
+            position: relative; z-index: 2;
+            border: 1px solid #ddd;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            animation: floating 6s ease-in-out infinite;
+        }
+        @keyframes floating { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
+        .mockup-logo { font-size: 4rem; color: var(--primary); margin-bottom: 20px; }
+        .mockup-title { font-weight: 900; font-size: 1.5rem; color: var(--dark); margin-bottom: 10px; }
+        .mockup-badge { background: var(--dark); color: white; padding: 5px 15px; border-radius: 5px; font-size: 0.8rem; }
+        
+        /* Hiệu ứng giấy sau lưng */
+        .mockup-paper::before {
+            content: ''; position: absolute; top: 10px; left: 10px; right: -10px; bottom: -10px;
+            background: #fff; border-radius: 15px; z-index: -1; border: 1px solid #ddd; opacity: 0.8;
+        }
+
+        /* Cột Phải: Bảng điều khiển */
+        .checkout-panel {
+            background: #fff; padding: 40px; border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(183, 21, 64, 0.08);
+            border: 2px solid #fff0f3; position: relative;
+        }
+        
+        .stock-status {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: #e6fffa; color: #00947e; padding: 8px 16px; 
+            border-radius: 30px; font-weight: 700; font-size: 0.9rem; margin-bottom: 20px;
+        }
+        .dot { width: 8px; height: 8px; background: #00947e; border-radius: 50%; animation: blink 2s infinite; }
+
+        .price-row {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 30px; border-bottom: 2px dashed #eee; padding-bottom: 20px;
+        }
+        .price-label { font-size: 1.1rem; color: #666; font-weight: 600; }
+        .price-text { font-size: 2.5rem; color: var(--primary); font-weight: 800; }
+
+        /* Bộ chọn số lượng xịn */
+        .qty-box {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #f8f9fa; padding: 15px; border-radius: 15px; margin-bottom: 30px;
+        }
+        .qty-btn {
+            width: 45px; height: 45px; border: none; background: white; 
+            border-radius: 12px; font-size: 1.2rem; color: var(--dark); 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; transition: 0.2s;
+        }
+        .qty-btn:hover { background: var(--primary); color: white; transform: scale(1.1); }
+        .qty-input {
+            font-size: 1.5rem; font-weight: 800; color: var(--dark);
+            width: 60px; text-align: center; border: none; background: transparent;
+        }
+
+        /* Nút Mua khổng lồ */
+        .btn-pay {
+            width: 100%; padding: 20px; border: none; border-radius: 15px;
+            background: linear-gradient(135deg, var(--primary), #d63031);
+            color: white; font-size: 1.2rem; font-weight: 800;
+            cursor: pointer; position: relative; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(183, 21, 64, 0.4);
+            transition: transform 0.2s; display: flex; justify-content: center; align-items: center; gap: 10px;
+        }
+        .btn-pay:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(183, 21, 64, 0.5); }
+        .btn-pay::after { /* Shimmer Effect */
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        /* --- 5. RESPONSIVE (MOBILE) --- */
+        @media (max-width: 900px) {
+            .hero h1 { font-size: 2.2rem; }
+            .info-grid { grid-template-columns: 1fr; margin-top: 20px; gap: 15px; }
+            .purchase-area { padding: 20px; border-radius: 20px; margin: 40px 0; }
+            .purchase-grid { grid-template-columns: 1fr; gap: 30px; }
+            
+            /* Mobile: Ẩn hình 3D to, hiển thị dạng nhỏ hơn */
+            .mockup-paper { height: 250px; max-width: 200px; margin-bottom: 20px; }
+            .mockup-logo { font-size: 2.5rem; }
+            .price-text { font-size: 2rem; }
+            
+            /* Table Mobile */
+            .table-wrap { overflow-x: auto; }
+            .custom-table { min-width: 500px; }
+        }
+
+        /* --- 6. MODAL & FOOTER --- */
+        footer { background: var(--dark); color: #aaa; text-align: center; padding: 50px 20px; margin-top: 50px; }
+        
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); z-index: 1000;
-            display: none; justify-content: center; align-items: center;
+            background: rgba(0,0,0,0.85); z-index: 2000;
+            display: none; justify-content: center; align-items: center; padding: 20px;
         }
-        .modal-box {
-            background: var(--white); padding: 30px; border-radius: 15px;
-            width: 90%; max-width: 450px; text-align: center;
-            position: relative; animation: slideDown 0.4s;
+        .modal-card {
+            background: white; width: 100%; max-width: 400px; border-radius: 25px;
+            padding: 30px; text-align: center; position: relative;
+            animation: zoomIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        @keyframes slideDown { from {opacity:0; transform:translateY(-50px);} to {opacity:1; transform:translateY(0);} }
-
-        .qr-img { width: 100%; max-width: 250px; margin: 20px 0; border: 2px dashed var(--primary); padding: 5px; border-radius: 10px; }
+        .qr-box { padding: 10px; border: 3px dashed var(--primary); border-radius: 15px; margin: 20px 0; background: #fff0f3; }
         
-        .loading-spinner {
-            border: 4px solid #f3f3f3; border-top: 4px solid var(--primary);
-            border-radius: 50%; width: 30px; height: 30px;
-            animation: spin 1s linear infinite; margin: 10px auto;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* Table Styles */
+        .custom-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .custom-table th { background: var(--dark); color: white; padding: 15px; }
+        .custom-table td { padding: 15px; border-bottom: 1px solid #eee; text-align: center; }
 
-        .result-box {
-            background: #2d3436; color: #00cec9; padding: 20px;
-            font-family: monospace; font-size: 1.2rem; font-weight: bold;
-            border-radius: 8px; margin-top: 20px; word-break: break-all;
-            border: 2px solid #00cec9; display: none;
-        }
-
-        /* Footer */
-        footer { background: #222; color: #aaa; text-align: center; padding: 40px 0; margin-top: 50px; }
+        @keyframes shimmer { 0% { left: -100%; } 100% { left: 200%; } }
+        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes blink { 50% { opacity: 0; } }
     </style>
 </head>
 <body>
 
-    <section class="hero">
+    <div class="hero">
+        <div class="particle p1"></div>
+        <div class="particle p2"></div>
         <div class="container">
-            <h1>Kho Đề Thi TSA</h1>
-            <p>Hệ thống cung cấp mã thi thử đánh giá tư duy Đại Học Bách Khoa Hà Nội</p>
-            <p style="font-size: 0.9rem; margin-top: -20px;"><i class="fa-solid fa-bolt"></i> Tự động - Nhanh chóng - Chính xác</p>
-            <a href="#mua-ngay" class="hero-btn">LẤY MÃ NGAY</a>
-        </div>
-    </section>
-
-    <div class="container" id="mua-ngay">
-        <div class="purchase-wrapper">
-            <h2 style="text-align: center; color: var(--dark); margin-bottom: 10px;">GÓI LUYỆN ĐỀ TIÊU CHUẨN</h2>
-            <div class="price-tag">25.000đ <span style="font-size: 1rem; color: #777; font-weight: normal;">/mã</span></div>
-            <div class="stock-info"><i class="fa-solid fa-box-open"></i> Kho còn: <span id="stock-count">...</span> mã</div>
-            
-            <ul style="list-style: none; margin-bottom: 30px; color: #555;">
-                <li><i class="fa-solid fa-check" style="color: var(--success)"></i> Chuẩn cấu trúc TSA 2025</li>
-                <li><i class="fa-solid fa-check" style="color: var(--success)"></i> Có đáp án & giải chi tiết</li>
-                <li><i class="fa-solid fa-check" style="color: var(--success)"></i> Chấm điểm tự động</li>
-            </ul>
-
-            <button class="btn-buy" onclick="createOrder()">
-                <i class="fa-solid fa-cart-shopping"></i> MUA NGAY (QR CODE)
-            </button>
-            <p style="text-align: center; margin-top: 15px; font-size: 0.85rem; color: #888;">Hệ thống tự động gửi mã sau khi nhận tiền</p>
+            <div class="hero-tag">✨ HỆ THỐNG CUNG CẤP MÃ THI THỬ TSA</div>
+            <h1>TSA - TƯ DUY THỜI ĐẠI SỐ</h1>
+            <p style="font-size: 1.1rem; opacity: 0.9;">Nền tảng cung cấp mã thi thử chuẩn cấu trúc 2026</p>
         </div>
     </div>
 
-    <section class="container">
-        <h2 class="section-title">CẤU TRÚC BÀI THI TSA</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon"><i class="fa-solid fa-square-root-variable"></i></div>
-                <h3>Tư Duy Toán Học</h3>
-                <p>40 câu hỏi trắc nghiệm (60 phút). Đánh giá năng lực toán học nền tảng và khả năng tư duy logic.</p>
+    <div class="container">
+        <div class="info-grid fade-up">
+            <div class="info-card">
+                <div class="icon-circle"><i class="fa-solid fa-calculator"></i></div>
+                <h3>Tư duy Toán học</h3>
+                <p style="color: #666; font-size: 0.9rem; margin-top: 10px;">40 câu / 60 phút. Đánh giá tư duy Logic & Toán nền tảng.</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon"><i class="fa-solid fa-book-open-reader"></i></div>
-                <h3>Tư Duy Đọc Hiểu</h3>
-                <p>20 câu hỏi (30 phút). Kỹ năng đọc nhanh, phân tích văn bản khoa học, báo chí và văn học.</p>
+            <div class="info-card">
+                <div class="icon-circle"><i class="fa-solid fa-book-open"></i></div>
+                <h3>Tư duy Đọc hiểu</h3>
+                <p style="color: #666; font-size: 0.9rem; margin-top: 10px;">20 câu / 30 phút. Phân tích văn bản Khoa học & Báo chí.</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon"><i class="fa-solid fa-flask"></i></div>
-                <h3>Tư Duy Khoa Học</h3>
-                <p>40 câu hỏi (60 phút). Giải quyết vấn đề thuộc lĩnh vực Lý, Hóa, Sinh thông qua dữ liệu thực tế.</p>
+            <div class="info-card">
+                <div class="icon-circle"><i class="fa-solid fa-flask"></i></div>
+                <h3>Tư duy Khoa học</h3>
+                <p style="color: #666; font-size: 0.9rem; margin-top: 10px;">40 câu / 60 phút. Giải quyết vấn đề Lý - Hóa - Sinh.</p>
             </div>
         </div>
-    </section>
+
+        <div class="fade-up" style="margin-top: 80px; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+            <h2 style="color: var(--dark); margin-bottom: 20px;"><i class="fa-solid fa-calendar-check"></i> Lịch thi dự kiến 2026</h2>
+            <div class="table-wrap">
+                <table class="custom-table">
+                    <thead>
+                        <tr><th>Đợt thi</th><th>Ngày tổ chức</th><th>Thời gian đăng ký</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Đợt 1</strong></td><td>24 – 25/01/2026</td><td>05 – 15/12/2025</td></tr>
+                        <tr><td><strong>Đợt 2</strong></td><td>14 – 15/03/2026</td><td>05 – 15/02/2026</td></tr>
+                        <tr><td><strong>Đợt 3</strong></td><td>16 – 17/05/2026</td><td>05 – 15/04/2026</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="purchase-area fade-up" id="buy-now">
+            <div class="purchase-grid">
+                
+                <div class="product-visual">
+                    <h2 style="color: var(--dark); margin-bottom: 10px; font-size: 2rem;">MUA MÃ THI THỬ</h2>
+                    <p style="color: #666; margin-bottom: 40px;">Truy cập ngay kho đề chuẩn Bách Khoa Hà Nội</p>
+                    
+                    <div class="mockup-paper">
+                        <div class="mockup-logo"><i class="fa-solid fa-file-shield"></i></div>
+                        <div class="mockup-title">TSA EXAM CODE</div>
+                        <div class="mockup-badge">PREMIUM EDITION</div>
+                        <div style="margin-top: 20px; font-family: monospace; color: #aaa;">####-####-####</div>
+                    </div>
+                    
+                    <div style="margin-top: 30px; display: flex; justify-content: center; gap: 20px; font-size: 0.9rem; color: #555;">
+                        <span><i class="fa-solid fa-check" style="color: var(--success)"></i> Có IRT</span>
+                        <span><i class="fa-solid fa-check" style="color: var(--success)"></i> Chấm tự động</span>
+                    </div>
+                </div>
+
+                <div class="checkout-panel">
+                    <div class="stock-status"><div class="dot"></div> Hệ thống Online: <span id="stock-count">...</span> mã</div>
+                    
+                    <div class="price-row">
+                        <div class="price-label">Đơn giá</div>
+                        <div class="price-text">25.000 đ</div>
+                    </div>
+
+                    <div style="margin-bottom: 10px; font-weight: bold; color: var(--dark);">Số lượng muốn mua:</div>
+                    <div class="qty-box">
+                        <button class="qty-btn" onclick="updateQty(-1)"><i class="fa-solid fa-minus"></i></button>
+                        <input id="qty-display" class="qty-input" value="1" readonly>
+                        <button class="qty-btn" onclick="updateQty(1)"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 20px; font-weight: bold;">
+                        <span>Thành tiền:</span>
+                        <span id="total-display" style="color: var(--primary); font-size: 1.2rem;">25.000 đ</span>
+                    </div>
+
+                    <button class="btn-pay" onclick="createOrder()">
+                        <i class="fa-solid fa-qrcode"></i> THANH TOÁN NGAY
+                    </button>
+                    <p style="text-align: center; margin-top: 15px; font-size: 0.85rem; color: #888;">
+                        <i class="fa-solid fa-lock"></i> Bảo mật SSL - Mã gửi tự động sau thanh toán
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
 
     <footer>
-        <div class="container">
-            <h3>LUYỆN THI TSA - KHOAHOCVIP</h3>
-            <p>Hệ thống bán mã code tự động 24/7</p>
-            <p style="font-size: 0.8rem; margin-top: 10px;">&copy; 2025 All Rights Reserved.</p>
-        </div>
+        <h3 style="color: white;">KHOAHOCVIP</h3>
+        <p>&copy; 2025 All Rights Reserved.</p>
     </footer>
 
     <div class="modal-overlay" id="paymentModal">
-        <div class="modal-box">
-            <h3 style="color: var(--primary);">THANH TOÁN QR</h3>
-            <p>Quét mã bên dưới để nhận code</p>
-            
-            <div id="qr-container">
-                <img id="qr-code" class="qr-img" src="" alt="QR Loading...">
-                <p>Nội dung CK: <b id="order-content" style="color: red; font-size: 1.2rem;">...</b></p>
-                <div class="loading-spinner"></div>
-                <p style="font-size: 0.9rem; color: #666;">Đang chờ ngân hàng xác nhận...</p>
+        <div class="modal-card">
+            <div id="step-qr">
+                <h3 style="color: var(--dark);">QUÉT MÃ THANH TOÁN</h3>
+                <div style="background: #222; color: #f1c40f; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-family: monospace; display: inline-block; margin: 10px 0; font-size: 1.2rem;" id="countdown">10:00</div>
+                
+                <div class="qr-box">
+                    <img id="qr-code" src="" alt="QR" style="width: 100%; display: block; border-radius: 10px;">
+                </div>
+                
+                <div style="text-align: left; background: #f8f9fa; padding: 15px; border-radius: 10px; font-size: 0.95rem;">
+                    <div>Số tiền: <b id="pay-amount" style="color: var(--primary);">...</b></div>
+                    <div>Nội dung: <b id="pay-content" style="font-family: monospace; color: var(--dark);">...</b></div>
+                </div>
+
+                <div style="margin-top: 15px; font-size: 0.85rem; color: #666;">
+                    <i class="fa-solid fa-circle-notch fa-spin"></i> Đang chờ xác nhận giao dịch...
+                </div>
+                <button onclick="closeModal()" style="margin-top: 15px; border: none; background: none; text-decoration: underline; color: #999; cursor: pointer;">Hủy</button>
             </div>
 
-            <div id="result-container" style="display: none;">
-                <i class="fa-solid fa-circle-check" style="font-size: 3rem; color: var(--success); margin-bottom: 10px;"></i>
+            <div id="step-success" style="display: none;">
+                <i class="fa-solid fa-check-circle" style="font-size: 4rem; color: var(--success); margin-bottom: 15px;"></i>
                 <h3 style="color: var(--success);">THÀNH CÔNG!</h3>
-                <div id="result-code" class="result-box"></div>
-                <p style="color: #e74c3c; font-weight: bold; margin-top: 10px; animation: blink 2s infinite;">
-                    <i class="fa-solid fa-camera"></i> CHỤP MÀN HÌNH LẠI NGAY!
-                </p>
-                <button class="btn-buy" style="margin-top: 20px; font-size: 1rem;" onclick="location.reload()">ĐÓNG</button>
+                <div id="code-result" style="background: #2d3436; color: #00cec9; padding: 15px; font-family: monospace; border: 2px dashed #00cec9; margin: 20px 0; word-break: break-all; font-weight: bold;">Loading...</div>
+                <p style="color: var(--primary); font-weight: bold; font-size: 0.9rem;">CHỤP MÀN HÌNH LẠI NGAY!</p>
+                <button class="btn-pay" onclick="location.reload()" style="margin-top: 20px;">XONG</button>
             </div>
         </div>
     </div>
 
     <script>
-        // CẤU HÌNH API (Trỏ về Server Node.js của bạn)
-        const API_URL = "http://localhost:3000"; 
-        
-        // Thông tin Ngân hàng để hiển thị QR
-        const BANK_ID = "MB"; // Ngân hàng MB
-        const ACC_NO = "0363236306"; // Số tài khoản
-        const ACC_NAME = "NGUYEN VAN A"; // Tên chủ tài khoản
+        const API_URL = "https://api-ban-code-tsa.onrender.com"; 
+        const BANK_ID = "MB";
+        const ACC_NO = "0363236306";
+        const ACC_NAME = "NGUYEN VAN A";
         const PRICE = 25000;
 
-        let checkInterval;
-        let currentOrderID;
+        // Scroll Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        });
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-        // 1. Load số lượng tồn kho khi vào trang
-        async function fetchStock() {
-            try {
-                const response = await fetch(API_URL + '/stock');
-                const data = await response.json();
-                document.getElementById('stock-count').innerText = data.count;
-            } catch (error) {
-                console.error("Lỗi kết nối Server:", error);
-                document.getElementById('stock-count').innerText = "0";
-            }
+        // Logic
+        let qty = 1; let total = PRICE; let orderID = ""; let timerInterval, checkInterval;
+
+        fetch(API_URL + '/stock').then(r => r.json()).then(d => document.getElementById('stock-count').innerText = d.count).catch(() => document.getElementById('stock-count').innerText = "0");
+
+        function updateQty(n) {
+            qty += n;
+            if (qty < 1) qty = 1; if (qty > 10) qty = 10;
+            total = qty * PRICE;
+            document.getElementById('qty-display').value = qty;
+            document.getElementById('total-display').innerText = total.toLocaleString('vi-VN') + " đ";
+            document.getElementById('pay-amount').innerText = total.toLocaleString('vi-VN') + " đ";
         }
-        fetchStock();
 
-        // 2. Tạo đơn hàng & Hiển thị QR
         function createOrder() {
-            // Sinh mã đơn hàng: TSA + số ngẫu nhiên
-            currentOrderID = "TSA" + Math.floor(100000 + Math.random() * 900000);
-            
-            // Tạo link VietQR
-            const qrLink = `https://img.vietqr.io/image/${BANK_ID}-${ACC_NO}-compact.png?amount=${PRICE}&addInfo=${currentOrderID}&accountName=${encodeURIComponent(ACC_NAME)}`;
-            
-            // Cập nhật UI Modal
+            orderID = "TSA" + Math.floor(100000 + Math.random() * 900000);
+            document.getElementById('pay-content').innerText = orderID;
+            const qrLink = `https://img.vietqr.io/image/${BANK_ID}-${ACC_NO}-compact.png?amount=${total}&addInfo=${orderID}&accountName=${encodeURIComponent(ACC_NAME)}`;
             document.getElementById('qr-code').src = qrLink;
-            document.getElementById('order-content').innerText = currentOrderID;
+            
             document.getElementById('paymentModal').style.display = 'flex';
+            document.getElementById('step-qr').style.display = 'block';
+            document.getElementById('step-success').style.display = 'none';
 
-            // Bắt đầu thăm dò (Polling) Server
-            startCheckingPayment();
+            startTimer(600); startChecking();
         }
 
-        // 3. Liên tục hỏi Server xem tiền về chưa
-        function startCheckingPayment() {
-            if (checkInterval) clearInterval(checkInterval);
+        function startTimer(duration) {
+            let timer = duration, minutes, seconds;
+            clearInterval(timerInterval);
+            const display = document.getElementById('countdown');
+            timerInterval = setInterval(() => {
+                minutes = parseInt(timer / 60, 10); seconds = parseInt(timer % 60, 10);
+                minutes = minutes < 10 ? "0" + minutes : minutes; seconds = seconds < 10 ? "0" + seconds : seconds;
+                display.textContent = minutes + ":" + seconds;
+                if (--timer < 0) { clearInterval(timerInterval); closeModal(); alert("Hết giờ!"); }
+            }, 1000);
+        }
 
+        function startChecking() {
+            clearInterval(checkInterval);
             checkInterval = setInterval(async () => {
                 try {
-                    const res = await fetch(API_URL + '/check-order/' + currentOrderID);
+                    const res = await fetch(API_URL + '/check-order/' + orderID);
                     const data = await res.json();
-
                     if (data.status === 'success') {
-                        // Đã thanh toán thành công!
-                        clearInterval(checkInterval);
-                        showResult(data.data.codes);
+                        clearInterval(checkInterval); clearInterval(timerInterval);
+                        showSuccess(data.data.codes);
                     }
-                } catch (error) {
-                    console.log("Đang chờ server...");
-                }
-            }, 2000); // 2 giây hỏi 1 lần
+                } catch (e) {}
+            }, 2000);
         }
 
-        // 4. Hiển thị mã Code khi thành công
-        function showResult(codes) {
-            document.getElementById('qr-container').style.display = 'none';
-            document.getElementById('result-container').style.display = 'block';
-            
-            const codeHtml = codes.join('<br>----------------<br>');
-            document.getElementById('result-code').style.display = 'block';
-            document.getElementById('result-code').innerHTML = codeHtml;
+        function showSuccess(codes) {
+            document.getElementById('step-qr').style.display = 'none';
+            document.getElementById('step-success').style.display = 'block';
+            document.getElementById('code-result').innerHTML = codes.join('<br>----------------<br>');
         }
 
-        // Style animation
-        const style = document.createElement('style');
-        style.innerHTML = `
-            @keyframes blink { 50% { opacity: 0.5; } }
-        `;
-        document.head.appendChild(style);
+        function closeModal() {
+            document.getElementById('paymentModal').style.display = 'none';
+            clearInterval(timerInterval); clearInterval(checkInterval);
+        }
     </script>
 </body>
 </html>
