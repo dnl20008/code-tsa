@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUYỆN THI TSA BÁCH KHOA - HỆ THỐNG TỰ ĐỘNG</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- 1. CORE STYLES --- */
+        :root {
+            --primary: #b71540; /* Đỏ HUST */
+            --dark: #0c2461;
+            --light: #f5f6fa;
+            --white: #ffffff;
+            --success: #27ae60;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--light);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, .btn { font-family: 'Montserrat', sans-serif; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* --- 2. HERO SECTION (BANNER) --- */
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: var(--white);
+            padding: 80px 0 120px;
+            text-align: center;
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+        }
+
+        .hero h1 { font-size: 3.5rem; font-weight: 800; margin-bottom: 10px; text-transform: uppercase; }
+        .hero p { font-size: 1.2rem; opacity: 0.9; margin-bottom: 30px; }
+        .hero-btn {
+            background: #f1c40f; color: var(--dark);
+            padding: 15px 40px; border-radius: 50px;
+            text-decoration: none; font-weight: 800; font-size: 1.1rem;
+            transition: 0.3s; display: inline-block;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .hero-btn:hover { transform: translateY(-3px); background: #f39c12; }
+
+        /* --- 3. ABOUT TSA SECTION --- */
+        .section-title { text-align: center; margin: 60px 0 40px; color: var(--dark); font-size: 2.2rem; font-weight: 700; }
+        
+        .features-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .feature-card {
+            background: var(--white); padding: 30px; border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: center;
+            transition: 0.3s; border-bottom: 4px solid transparent;
+        }
+        .feature-card:hover { transform: translateY(-10px); border-bottom-color: var(--primary); }
+        
+        .feature-icon { font-size: 3rem; color: var(--primary); margin-bottom: 20px; }
+        .feature-card h3 { margin-bottom: 15px; color: var(--dark); }
+
+        /* --- 4. PURCHASE SECTION (KHU VỰC MUA HÀNG) --- */
+        .purchase-wrapper {
+            background: var(--white);
+            max-width: 600px; margin: -80px auto 50px; /* Đẩy lên đè banner */
+            padding: 40px; border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            position: relative; z-index: 10;
+            border: 2px solid #eee;
+        }
+
+        .price-tag {
+            font-size: 3rem; font-weight: 800; color: var(--primary);
+            text-align: center; margin: 10px 0;
+        }
+        .stock-info {
+            text-align: center; color: var(--success); font-weight: 600;
+            background: #eaffea; padding: 5px 15px; border-radius: 20px;
+            display: inline-block; margin-left: 50%; transform: translateX(-50%);
+            margin-bottom: 20px;
+        }
+
+        .btn-buy {
+            width: 100%; padding: 18px; border: none; border-radius: 10px;
+            background: var(--primary); color: var(--white);
+            font-size: 1.2rem; font-weight: 700; cursor: pointer;
+            transition: 0.3s; text-transform: uppercase;
+        }
+        .btn-buy:hover { background: #900e30; }
+        
+        /* --- 5. MODAL & QR CODE --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 1000;
+            display: none; justify-content: center; align-items: center;
+        }
+        .modal-box {
+            background: var(--white); padding: 30px; border-radius: 15px;
+            width: 90%; max-width: 450px; text-align: center;
+            position: relative; animation: slideDown 0.4s;
+        }
+        @keyframes slideDown { from {opacity:0; transform:translateY(-50px);} to {opacity:1; transform:translateY(0);} }
+
+        .qr-img { width: 100%; max-width: 250px; margin: 20px 0; border: 2px dashed var(--primary); padding: 5px; border-radius: 10px; }
+        
+        .loading-spinner {
+            border: 4px solid #f3f3f3; border-top: 4px solid var(--primary);
+            border-radius: 50%; width: 30px; height: 30px;
+            animation: spin 1s linear infinite; margin: 10px auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .result-box {
+            background: #2d3436; color: #00cec9; padding: 20px;
+            font-family: monospace; font-size: 1.2rem; font-weight: bold;
+            border-radius: 8px; margin-top: 20px; word-break: break-all;
+            border: 2px solid #00cec9; display: none;
+        }
+
+        /* Footer */
+        footer { background: #222; color: #aaa; text-align: center; padding: 40px 0; margin-top: 50px; }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Kho Đề Thi TSA</h1>
+            <p>Hệ thống cung cấp mã thi thử đánh giá tư duy Đại Học Bách Khoa Hà Nội</p>
+            <p style="font-size: 0.9rem; margin-top: -20px;"><i class="fa-solid fa-bolt"></i> Tự động - Nhanh chóng - Chính xác</p>
+            <a href="#mua-ngay" class="hero-btn">LẤY MÃ NGAY</a>
+        </div>
+    </section>
+
+    <div class="container" id="mua-ngay">
+        <div class="purchase-wrapper">
+            <h2 style="text-align: center; color: var(--dark); margin-bottom: 10px;">GÓI LUYỆN ĐỀ TIÊU CHUẨN</h2>
+            <div class="price-tag">25.000đ <span style="font-size: 1rem; color: #777; font-weight: normal;">/mã</span></div>
+            <div class="stock-info"><i class="fa-solid fa-box-open"></i> Kho còn: <span id="stock-count">...</span> mã</div>
+            
+            <ul style="list-style: none; margin-bottom: 30px; color: #555;">
+                <li><i class="fa-solid fa-check" style="color: var(--success)"></i> Chuẩn cấu trúc TSA 2025</li>
+                <li><i class="fa-solid fa-check" style="color: var(--success)"></i> Có đáp án & giải chi tiết</li>
+                <li><i class="fa-solid fa-check" style="color: var(--success)"></i> Chấm điểm tự động</li>
+            </ul>
+
+            <button class="btn-buy" onclick="createOrder()">
+                <i class="fa-solid fa-cart-shopping"></i> MUA NGAY (QR CODE)
+            </button>
+            <p style="text-align: center; margin-top: 15px; font-size: 0.85rem; color: #888;">Hệ thống tự động gửi mã sau khi nhận tiền</p>
+        </div>
+    </div>
+
+    <section class="container">
+        <h2 class="section-title">CẤU TRÚC BÀI THI TSA</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-square-root-variable"></i></div>
+                <h3>Tư Duy Toán Học</h3>
+                <p>40 câu hỏi trắc nghiệm (60 phút). Đánh giá năng lực toán học nền tảng và khả năng tư duy logic.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-book-open-reader"></i></div>
+                <h3>Tư Duy Đọc Hiểu</h3>
+                <p>20 câu hỏi (30 phút). Kỹ năng đọc nhanh, phân tích văn bản khoa học, báo chí và văn học.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-flask"></i></div>
+                <h3>Tư Duy Khoa Học</h3>
+                <p>40 câu hỏi (60 phút). Giải quyết vấn đề thuộc lĩnh vực Lý, Hóa, Sinh thông qua dữ liệu thực tế.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <h3>LUYỆN THI TSA - KHOAHOCVIP</h3>
+            <p>Hệ thống bán mã code tự động 24/7</p>
+            <p style="font-size: 0.8rem; margin-top: 10px;">&copy; 2025 All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal-box">
+            <h3 style="color: var(--primary);">THANH TOÁN QR</h3>
+            <p>Quét mã bên dưới để nhận code</p>
+            
+            <div id="qr-container">
+                <img id="qr-code" class="qr-img" src="" alt="QR Loading...">
+                <p>Nội dung CK: <b id="order-content" style="color: red; font-size: 1.2rem;">...</b></p>
+                <div class="loading-spinner"></div>
+                <p style="font-size: 0.9rem; color: #666;">Đang chờ ngân hàng xác nhận...</p>
+            </div>
+
+            <div id="result-container" style="display: none;">
+                <i class="fa-solid fa-circle-check" style="font-size: 3rem; color: var(--success); margin-bottom: 10px;"></i>
+                <h3 style="color: var(--success);">THÀNH CÔNG!</h3>
+                <div id="result-code" class="result-box"></div>
+                <p style="color: #e74c3c; font-weight: bold; margin-top: 10px; animation: blink 2s infinite;">
+                    <i class="fa-solid fa-camera"></i> CHỤP MÀN HÌNH LẠI NGAY!
+                </p>
+                <button class="btn-buy" style="margin-top: 20px; font-size: 1rem;" onclick="location.reload()">ĐÓNG</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CẤU HÌNH API (Trỏ về Server Node.js của bạn)
+        const API_URL = "http://localhost:3000"; 
+        
+        // Thông tin Ngân hàng để hiển thị QR
+        const BANK_ID = "MB"; // Ngân hàng MB
+        const ACC_NO = "0363236306"; // Số tài khoản
+        const ACC_NAME = "NGUYEN VAN A"; // Tên chủ tài khoản
+        const PRICE = 25000;
+
+        let checkInterval;
+        let currentOrderID;
+
+        // 1. Load số lượng tồn kho khi vào trang
+        async function fetchStock() {
+            try {
+                const response = await fetch(API_URL + '/stock');
+                const data = await response.json();
+                document.getElementById('stock-count').innerText = data.count;
+            } catch (error) {
+                console.error("Lỗi kết nối Server:", error);
+                document.getElementById('stock-count').innerText = "0";
+            }
+        }
+        fetchStock();
+
+        // 2. Tạo đơn hàng & Hiển thị QR
+        function createOrder() {
+            // Sinh mã đơn hàng: TSA + số ngẫu nhiên
+            currentOrderID = "TSA" + Math.floor(100000 + Math.random() * 900000);
+            
+            // Tạo link VietQR
+            const qrLink = `https://img.vietqr.io/image/${BANK_ID}-${ACC_NO}-compact.png?amount=${PRICE}&addInfo=${currentOrderID}&accountName=${encodeURIComponent(ACC_NAME)}`;
+            
+            // Cập nhật UI Modal
+            document.getElementById('qr-code').src = qrLink;
+            document.getElementById('order-content').innerText = currentOrderID;
+            document.getElementById('paymentModal').style.display = 'flex';
+
+            // Bắt đầu thăm dò (Polling) Server
+            startCheckingPayment();
+        }
+
+        // 3. Liên tục hỏi Server xem tiền về chưa
+        function startCheckingPayment() {
+            if (checkInterval) clearInterval(checkInterval);
+
+            checkInterval = setInterval(async () => {
+                try {
+                    const res = await fetch(API_URL + '/check-order/' + currentOrderID);
+                    const data = await res.json();
+
+                    if (data.status === 'success') {
+                        // Đã thanh toán thành công!
+                        clearInterval(checkInterval);
+                        showResult(data.data.codes);
+                    }
+                } catch (error) {
+                    console.log("Đang chờ server...");
+                }
+            }, 2000); // 2 giây hỏi 1 lần
+        }
+
+        // 4. Hiển thị mã Code khi thành công
+        function showResult(codes) {
+            document.getElementById('qr-container').style.display = 'none';
+            document.getElementById('result-container').style.display = 'block';
+            
+            const codeHtml = codes.join('<br>----------------<br>');
+            document.getElementById('result-code').style.display = 'block';
+            document.getElementById('result-code').innerHTML = codeHtml;
+        }
+
+        // Style animation
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes blink { 50% { opacity: 0.5; } }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
