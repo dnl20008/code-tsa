@@ -460,6 +460,7 @@
         }
 
         function createOrder() {
+            // 1. Kiểm tra Email
             const emailInput = document.getElementById('customer-email');
             if (!emailInput.value || !emailInput.value.includes('@')) {
                 alert("Vui lòng nhập Email hợp lệ!");
@@ -467,7 +468,18 @@
                 return;
             }
 
+            // 2. Tạo Mã đơn hàng
             orderID = "TSA" + Math.floor(100000 + Math.random() * 900000);
+            
+            // --- THÊM ĐOẠN NÀY ĐỂ LƯU EMAIL ---
+            try {
+                fetch(API_URL + '/create-order', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ orderID, email: emailInput.value })
+                });
+            } catch (e) {}
+            // ----------------------------------
             
             document.getElementById('pay-content').innerText = orderID;
             const qrLink = `https://img.vietqr.io/image/${BANK_ID}-${ACC_NO}-compact.png?amount=${total}&addInfo=${orderID}&accountName=${encodeURIComponent(ACC_NAME)}`;
@@ -520,3 +532,4 @@
     </script>
 </body>
 </html>
+
