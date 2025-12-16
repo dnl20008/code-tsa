@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 
 // --- CẤU HÌNH ---
 // HÃY KIỂM TRA KỸ LẠI MẬT KHẨU TRONG LINK NÀY
-const MONGO_URI = "mongodb+srv://admin:matkhaucuaban@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority";
+const MONGO_URI = "mongodb+srv://admin:f7K3ZWVXxkxBK389@cluster0.wptvqv8.mongodb.net/?appName=Cluster0";
 
 console.log("⏳ Đang thử kết nối MongoDB...");
 
@@ -138,3 +138,4 @@ app.get('/check-order/:orderID', async (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 Server đang chạy tại port ${PORT}`));
+
