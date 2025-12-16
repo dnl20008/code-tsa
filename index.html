@@ -80,7 +80,7 @@
         }
         .info-card:hover .icon-box { transform: rotate(0deg) scale(1.1); }
 
-        /* --- 5. TIMELINE GUIDE SECTION (NEW STYLE) --- */
+        /* --- 5. TIMELINE GUIDE SECTION --- */
         .guide-section { 
             margin-top: 60px; background: #fff; border-radius: 20px; 
             padding: 40px 20px; position: relative; overflow: hidden;
@@ -106,7 +106,8 @@
         .tl-item.active { opacity: 1; transform: translateY(0); }
 
         .tl-dot {
-            position: absolute; left: -31px; top: 0; width: 35px; height: 35px; 
+            /* FIXED MOBILE ALIGNMENT */
+            position: absolute; left: -32.5px; top: 0; width: 35px; height: 35px; 
             background: var(--white); border: 3px solid var(--primary);
             border-radius: 50%; color: var(--primary); display: flex; align-items: center; justify-content: center;
             font-weight: 900; font-size: 0.9rem; z-index: 2; box-shadow: 0 0 0 5px #fff;
@@ -116,7 +117,7 @@
             background: #f8f9fa; border-radius: 15px; padding: 20px;
             border-left: 4px solid var(--primary); box-shadow: 0 5px 15px rgba(0,0,0,0.05); position: relative;
         }
-        .tl-content::before { /* Mũi tên */
+        .tl-content::before { 
             content: ''; position: absolute; top: 10px; left: -8px; width: 15px; height: 15px; background: #f8f9fa;
             transform: rotate(45deg); border-left: 4px solid var(--primary); border-bottom: 4px solid transparent;
         }
@@ -197,9 +198,20 @@
             overflow: hidden; animation: zoomIn 0.3s ease; position: relative;
         }
         .modal-body { padding: 30px; text-align: center; }
+        
+        /* NEW: TIMER BADGE (GÓC TRÊN PHẢI) */
+        .timer-badge {
+            position: absolute; top: 15px; right: 15px;
+            background: #fff3cd; color: #856404;
+            padding: 6px 15px; border-radius: 30px;
+            font-weight: bold; font-family: monospace; font-size: 1.1rem;
+            border: 1px solid #ffeeba; box-shadow: 0 4px 6px rgba(0,0,0,0.05); z-index: 10;
+        }
+
         .qr-frame { 
             padding: 10px; border: 2px dashed var(--primary); border-radius: 15px; 
-            margin: 15px 0; background: #fff5f7; display: inline-block;
+            margin: 25px 0 15px; /* Tăng margin top để tách khỏi tiêu đề */
+            background: #fff5f7; display: inline-block;
         }
         .qr-img { width: 100%; max-width: 220px; border-radius: 8px; display: block; }
 
@@ -227,8 +239,9 @@
             .tl-item:nth-child(odd) { padding-right: 40px; margin-left: 0; text-align: right; }
             .tl-item:nth-child(even) { margin-left: 50%; padding-left: 40px; text-align: left; }
 
-            .tl-item:nth-child(odd) .tl-dot { left: auto; right: -19px; }
-            .tl-item:nth-child(even) .tl-dot { left: -19px; }
+            /* Fixed Desktop Alignment */
+            .tl-item:nth-child(odd) .tl-dot { left: auto; right: -17.5px; }
+            .tl-item:nth-child(even) .tl-dot { left: -17.5px; }
 
             .tl-item:nth-child(odd) .tl-content { border-left: none; border-right: 4px solid var(--primary); }
             .tl-item:nth-child(odd) .tl-content::before { left: auto; right: -8px; transform: rotate(225deg); }
@@ -377,9 +390,11 @@
 
     <div class="modal-overlay" id="paymentModal">
         <div class="modal-content">
+            
+            <div id="countdown" class="timer-badge">10:00</div>
+
             <div id="step-qr" class="modal-body">
                 <h3 style="color: var(--dark); margin-bottom: 5px;">QUÉT MÃ ĐỂ MUA</h3>
-                <div style="background: #222; color: #f1c40f; padding: 4px 12px; border-radius: 12px; font-weight: bold; font-family: monospace; display: inline-block; font-size: 1.1rem; margin-bottom: 15px;" id="countdown">10:00</div>
                 
                 <div class="qr-frame">
                     <img id="qr-code" class="qr-img" src="" alt="QR Code">
@@ -532,6 +547,3 @@
     </script>
 </body>
 </html>
-
-
-
